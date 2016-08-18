@@ -12,6 +12,7 @@ repositories {
 dependencies {
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'ch.qos.logback:logback-classic:1.1.7'
+    compile 'ch.qos.logback:logback-core:1.1.7'
     compile 'org.projectlombok:lombok:1.16.10'
 
     testCompile 'junit:junit:4.11'
