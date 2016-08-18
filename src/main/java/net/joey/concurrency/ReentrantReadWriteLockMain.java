@@ -1,0 +1,73 @@
+package net.joey.concurrency;
+
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.IntStream;
+
+/**
+ * ReentrantReadWriteLock을 사용하여 readLock/writeLock 을 분리 사용할 수 있는 예제입니다.
+ *
+ * @see ReentrantLockMain
+ * Created by Joey on 2016. 8. 18..
+ */
+@Slf4j
+public class ReentrantReadWriteLockMain {
+
+    public static void main(String[] args) {
+        ReentrantReadWriteLockMain lockMain = new ReentrantReadWriteLockMain();
+
+        lockMain.exampleReentrantReadWriteLock();
+    }
+
+    public void exampleReentrantReadWriteLock() {
+        List<String> list = new ArrayList<>();
+
+        final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+        final ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
+        ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
+
+        IntStream.range(0, 2).forEach(i -> {
+            Thread producer = new Thread(() -> {
+                try {
+                    writeLock.lock();
+                    IntStream.range(0, 10).forEach(item -> {
+                        list.add(String.valueOf(item));
+                    });
+                } finally {
+                    writeLock.unlock();
+                }
+
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            producer.start();
+        });
+
+        Thread consumer = new Thread(() -> {
+            try {
+                readLock.lock();
+                StringBuffer sb = new StringBuffer();
+                list.stream().forEach(item -> {
+                    sb.append(item).append(' ');
+                });
+                log.info(sb.toString());
+            } finally {
+                list.clear();
+                readLock.unlock();
+            }
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        consumer.start();
+    }
+}
