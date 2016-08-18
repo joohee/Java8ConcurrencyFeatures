@@ -2,8 +2,6 @@ package net.joey.keyword;
 
 import lombok.extern.slf4j.Slf4j;
 
-import static javafx.scene.input.KeyCode.Z;
-
 /**
  * Anonymous class 와 lambda expression 내부에서의 this keyword 차이점에 대해 보여주는 예제입니다.
  * <p>
