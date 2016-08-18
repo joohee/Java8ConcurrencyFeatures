@@ -28,7 +28,7 @@ public class ReentrantReadWriteLockMain {
 
         final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
         final ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
-        ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
+        final ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
 
         IntStream.range(0, 2).forEach(i -> {
             Thread producer = new Thread(() -> {
