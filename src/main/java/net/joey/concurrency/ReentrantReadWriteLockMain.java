@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.IntStream;
 
@@ -31,40 +32,44 @@ public class ReentrantReadWriteLockMain {
 
         IntStream.range(0, 2).forEach(i -> {
             Thread producer = new Thread(() -> {
-                try {
-                    writeLock.lock();
-                    IntStream.range(0, 10).forEach(item -> {
-                        list.add(String.valueOf(item));
-                    });
-                } finally {
-                    writeLock.unlock();
-                }
+                while (true) {
+                    try {
+                        writeLock.lock();
+                        IntStream.range(0, 10).forEach(item -> {
+                            list.add(String.valueOf(item));
+                        });
+                    } finally {
+                        writeLock.unlock();
+                    }
 
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    try {
+                        TimeUnit.SECONDS.sleep(2);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             producer.start();
         });
 
         Thread consumer = new Thread(() -> {
-            try {
-                readLock.lock();
-                StringBuffer sb = new StringBuffer();
-                list.stream().forEach(item -> {
-                    sb.append(item).append(' ');
-                });
-                log.info(sb.toString());
-            } finally {
-                list.clear();
-                readLock.unlock();
-            }
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            while (true) {
+                try {
+                    readLock.lock();
+                    StringBuffer sb = new StringBuffer();
+                    list.stream().forEach(item -> {
+                        sb.append(item).append(' ');
+                    });
+                    log.info(sb.toString());
+                } finally {
+                    list.clear();
+                    readLock.unlock();
+                }
+                try {
+                    TimeUnit.SECONDS.sleep(3);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

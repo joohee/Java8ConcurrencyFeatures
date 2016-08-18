@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 
@@ -39,7 +40,7 @@ public class ReentrantLockMain {
                     }
 
                     try {
-                        Thread.sleep(1000);
+                        TimeUnit.SECONDS.sleep(1);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -64,7 +65,7 @@ public class ReentrantLockMain {
                 }
 
                 try {
-                    Thread.sleep(2000);
+                    TimeUnit.SECONDS.sleep(2);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
