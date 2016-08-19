@@ -8,6 +8,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.StampedLock;
 
+import static net.joey.concurrency.util.ConcurrentUtils.stop;
+
 /**
  * Created by Joey on 2016. 8. 19..
  */
@@ -56,6 +58,8 @@ public class StampedLockMain {
         executor.submit(readTask);
         executor.submit(readTask);
 
+        stop(executor);
+
     }
 
 
@@ -99,6 +103,8 @@ public class StampedLockMain {
             }
         });
 
+        stop(executor);
+
     }
 
     public void runWithConvertLock() {
@@ -123,5 +129,6 @@ public class StampedLockMain {
             }
         });
 
+        stop(executor);
     }
 }
