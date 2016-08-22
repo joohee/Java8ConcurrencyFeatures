@@ -1,10 +1,12 @@
-package net.joey.concurrency.lock;
+package net.joey.concurrent.lock;
 
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
+
+import static net.joey.concurrent.util.ConcurrentUtils.stop;
 
 /**
  * Thread간 변경 가능한 자원(mutable resource)을 공유할 경우 Race condition 이 발생할 수 있습니다.
@@ -36,18 +38,19 @@ public class SynchronizedMain {
         IntStream.range(0, 10_000).forEach(i -> executor.submit(this::incrementSynchronized));
         log.info("countSynchronized: {}", countSynchronized);
 
-        while (!executor.isTerminated()) {
-            executor.shutdownNow();
-        }
+        stop(executor);
     }
 
     void increment() {
         count = count + 1;
+//        count++;
+//        ++count;
     }
 
     void incrementSynchronized() {
         synchronized (this) {
             countSynchronized = countSynchronized + 1;
+//            countSynchronized++;
         }
     }
 

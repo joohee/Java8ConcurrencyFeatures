@@ -1,4 +1,4 @@
-package net.joey.concurrency.lock;
+package net.joey.concurrent.lock;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.StampedLock;
 
-import static net.joey.concurrency.util.ConcurrentUtils.stop;
+import static net.joey.concurrent.util.ConcurrentUtils.stop;
 
 /**
  * Created by Joey on 2016. 8. 19..

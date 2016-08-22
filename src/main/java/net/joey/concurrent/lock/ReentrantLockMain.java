@@ -1,4 +1,4 @@
-package net.joey.concurrency.lock;
+package net.joey.concurrent.lock;
 
 import lombok.extern.slf4j.Slf4j;
 

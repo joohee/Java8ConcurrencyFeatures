@@ -1,4 +1,4 @@
-package net.joey.concurrency.atomic;
+package net.joey.concurrent.atomic;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.LongAdder;
 import java.util.function.LongBinaryOperator;
 import java.util.stream.IntStream;
 
-import static net.joey.concurrency.util.ConcurrentUtils.stop;
+import static net.joey.concurrent.util.ConcurrentUtils.stop;
 
 /**
  * LongAdder, LongAccumulator 예제 클래스입니다.
