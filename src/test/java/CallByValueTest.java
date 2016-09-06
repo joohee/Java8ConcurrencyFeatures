@@ -54,7 +54,7 @@ public class CallByValueTest {
     private void foo(Balloon ballon) {
         ballon.setColor("red");
         ballon = new Balloon("green");
-        ballon.setColor("blue");
+        ballon.setColor("yellow");
     }
 
     private void swap(Balloon o1, Balloon o2) {
