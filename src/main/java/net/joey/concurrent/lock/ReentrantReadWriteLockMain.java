@@ -57,7 +57,7 @@ public class ReentrantReadWriteLockMain {
                 try {
                     readLock.lock();
                     StringBuffer sb = new StringBuffer();
-                    list.stream().forEach(item -> {
+                    list.forEach(item -> {
                         sb.append(item).append(' ');
                     });
                     log.info(sb.toString());
