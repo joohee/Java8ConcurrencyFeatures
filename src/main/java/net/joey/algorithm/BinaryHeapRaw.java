@@ -6,6 +6,41 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Comparator;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Created with Java8ConcurrencyFeatures.
+ * User: neigie
+ * Date: 2016. 9. 7.
+ * Time: 14:54
+ *
+ * BinaryHeap 구현체입니다.
+ * 최대값/최소값을 찾는데 특화되어 있습니다.
+ *
+ * 1. insert : 마지막에 원소를 넣고 parent와  recursive하게 비교합니다.
+ *  1) min heap : parent.value > child.value then change value.
+ *  2) max heap : parent.value < child.value then change value.
+ *
+ * 2. delete(min/max) : 최초에 정의할 때 이미 min/max heap이 결정되어 있으므로 delete시에는 root 원소를 반환합니다
+ * 이후 가장 마지막에 있는 원소를 root 자리에 넣고, children과 값을 비교합니다.
+ *   - child index 1 : parent index * 2
+ *   - child index 2 : parent index * 2 + 1 (or child index 1 + 1)
+ *
+ *   1) min heap
+ *      1> child index1.value < parent index.value
+ *         1-1> child index2.value < parent_index.value
+ *         -> 둘 중 작은 값과 바꾸고 반복한다
+ *         1-2> child index2.value > parent_index.value
+ *         -> child index1.value와 바꾸고 parent를 child index1로 변경하여 반복한다.
+ *      2> child index1.value > parent index.value
+ *         2-1> child index2.value < parent_index.value
+ *         -> child index2.value와 바꾸고 parent를 child index2로 변경하여 반복한다.
+ *         2-2> child index2.value > parent_index.value
+ *         -> 변경할 필요 없이 끝낸다.
+ *
+ *   2) max heap
+ *      - min heap과 방식을 동일하되 큰 값으로 변경한다.
+ *
+ * @see https://ko.wikipedia.org/wiki/%ED%9E%99_(%EC%9E%90%EB%A3%8C_%EA%B5%AC%EC%A1%B0)
+ */
 @Data
 @Slf4j
 public class BinaryHeapRaw {
@@ -18,8 +53,8 @@ public class BinaryHeapRaw {
         this.comparator = comparator;
     }
 
-    public void delete() throws InterruptedException {
-        // root 값이 min 값이므로 제거후 recursive하게 재정렬 한다
+    void delete() throws InterruptedException {
+        // root 값이 min 값이므로 제거후 reursive하게 재정렬 한다
         if (size == 0)
             return;
 
@@ -38,7 +73,7 @@ public class BinaryHeapRaw {
 
     }
 
-    public void rearrange(int parentIndex) {
+    private void rearrange(int parentIndex) {
         int leftChildIndex = parentIndex * 2;
         int rightChildIndex = leftChildIndex + 1;
 
@@ -57,7 +92,7 @@ public class BinaryHeapRaw {
         rearrange(leftChildIndex);
     }
 
-    public void insert(Integer target) throws InterruptedException {
+    void insert(Integer target) throws InterruptedException {
         if (size > maxSize - 1) {
             throw new ArrayIndexOutOfBoundsException("heap full.");
         }
@@ -72,7 +107,7 @@ public class BinaryHeapRaw {
 
     }
 
-    public void changeByComparator(int parentIndex, int childIndex) {
+    private void changeByComparator(int parentIndex, int childIndex) {
         // 부모를 보면서 값이 작은지 큰지 비교하여 교체
         if (childIndex == 1) return;
 
@@ -82,7 +117,7 @@ public class BinaryHeapRaw {
         }
     }
 
-    public void swap(int parentIndex, int childIndex) {
+    private void swap(int parentIndex, int childIndex) {
         int tmpValue = heap[parentIndex];
         heap[parentIndex] = heap[childIndex];
         heap[childIndex] = tmpValue;
