@@ -54,21 +54,17 @@ public class BinaryHeapRaw {
     }
 
     void delete() throws InterruptedException {
-        // root 값이 min 값이므로 제거후 reursive하게 재정렬 한다
+        // root 값이 min 값이므로 제거후 재정렬 한다
         if (size == 0)
             return;
 
         int rootIndex = 1;
         int rootValue = heap[rootIndex];
-        heap[rootIndex] = heap[size];
-        size--;
-
+        heap[rootIndex] = heap[size--];
         log.info("pop: {}", rootValue);
 
-        int parentIndex = rootIndex;
         // rearrange
-        rearrange(parentIndex);
-
+        rearrange(rootIndex);
         printHeap();
 
     }
@@ -79,13 +75,13 @@ public class BinaryHeapRaw {
 
         if (leftChildIndex > size) return;
 
-        if (this.comparator.compare(heap[parentIndex], heap[leftChildIndex]) >= 0) {
-            if (this.comparator.compare(heap[parentIndex], heap[rightChildIndex]) >= 0) {
-                swap(parentIndex, this.comparator.compare(heap[leftChildIndex], heap[rightChildIndex]) >= 0 ? rightChildIndex : leftChildIndex);
+        if (comparator.compare(heap[parentIndex], heap[leftChildIndex]) >= 0) {
+            if (comparator.compare(heap[parentIndex], heap[rightChildIndex]) >= 0) {
+                swap(parentIndex, comparator.compare(heap[leftChildIndex], heap[rightChildIndex]) >= 0 ? rightChildIndex : leftChildIndex);
             } else {
                 swap(parentIndex, leftChildIndex);
             }
-        } else if (this.comparator.compare(heap[parentIndex], heap[rightChildIndex]) >= 0) {
+        } else if (comparator.compare(heap[parentIndex], heap[rightChildIndex]) >= 0) {
             swap(parentIndex, rightChildIndex);
         }
         // recursive
@@ -94,7 +90,7 @@ public class BinaryHeapRaw {
 
     void insert(Integer target) throws InterruptedException {
         if (size > maxSize - 1) {
-            throw new ArrayIndexOutOfBoundsException("heap full.");
+            throw new ArrayIndexOutOfBoundsException("heap is full.");
         }
 
         heap[++size] = target;
@@ -124,7 +120,7 @@ public class BinaryHeapRaw {
     }
 
     private void printHeap() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.MILLISECONDS.sleep(500);
 
         for (int i = 1; i <= size; i++) {
             log.info("heap[{}] = {}", i, heap[i]);
