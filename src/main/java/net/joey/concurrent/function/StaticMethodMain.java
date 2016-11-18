@@ -38,6 +38,7 @@ public class StaticMethodMain {
         Student student = new Student("abc", 10);
         MethodInterface<Student> methodInterface = (s) -> {
             log.info("what is name?");
+            log.info("My name is {}", s.getName());
         };
         methodInterface.act(student);
         methodInterface.print(student);
