@@ -6,7 +6,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -35,12 +34,7 @@ public class PredicateMain {
         Student student1 = new Student("Joey", 12345678);
         Student student2 = new Student("Paul", 1);
 
-        Predicate<Student> predicate = (p) -> {
-            if (p.num > 10) {
-                return true;
-            }
-            return false;
-        };
+        Predicate<Student> predicate = p -> p.num > 10;
 
         log.info("test for student1: {}", predicate.test(student1));
         log.info("test for student2: {}", predicate.test(student2));
